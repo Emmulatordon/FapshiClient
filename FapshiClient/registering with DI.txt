@@ -1,0 +1,2 @@
+builder.Services.Configure<FapshiOptions>(builder.Configuration.GetSection("Fapshi"));
+builder.Services.AddHttpClient<IFapshiClient, FapshiClient>();

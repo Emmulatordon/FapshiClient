@@ -1,0 +1,5 @@
+"Fapshi": {
+  "ApiUser": "YOUR_USER",
+  "ApiKey": "YOUR_KEY",
+  "BaseUrl": "https://live.fapshi.com"
+}

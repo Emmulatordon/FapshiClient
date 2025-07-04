@@ -1,0 +1,53 @@
+using System;
+using System.Threading.Tasks;
+
+class Program
+{
+    static async Task Main()
+    {
+        // Initialize the FapshiClient (ensure it's properly configured with DI or manually)
+        var fapshiClient = new FapshiClient();
+
+        // Define the amount to charge and the recipient's phone number
+        int amount = 500; // Amount in XAF (e.g., 500 XAF)
+        string phone = "690123456"; // Recipient's phone number
+
+        // Attempt to charge the phone wallet
+        var chargeResponse = await fapshiClient.ChargePhoneWalletAsync(amount, phone);
+
+        // Check if the charge was successful
+        if (chargeResponse.StatusCode == 200)
+        {
+            Console.WriteLine($"Successfully initiated charge of {amount} XAF to phone {phone}. Transaction ID: {chargeResponse.TransId}");
+
+            // Retrieve the payment status using the transaction ID
+            var statusResponse = await fapshiClient.GetPaymentStatusAsync(chargeResponse.TransId);
+
+            // Check the payment status
+            if (statusResponse.Status == "SUCCESSFUL")
+            {
+                Console.WriteLine("Payment was successful.");
+            }
+            else if (statusResponse.Status == "FAILED")
+            {
+                Console.WriteLine("Payment failed.");
+            }
+            else if (statusResponse.Status == "PENDING")
+            {
+                Console.WriteLine("Payment is pending.");
+            }
+            else if (statusResponse.Status == "EXPIRED")
+            {
+                Console.WriteLine("Payment link has expired.");
+            }
+            else
+            {
+                Console.WriteLine($"Payment status: {statusResponse.Status}");
+            }
+        }
+        else
+        {
+            Console.WriteLine($"Failed to initiate charge. Status: {chargeResponse.StatusCode}, Message: {chargeResponse.Message}");
+        }
+    }
+}

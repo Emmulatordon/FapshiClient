@@ -28,6 +28,7 @@ namespace FapshiClient
             _httpClient.DefaultRequestHeaders.Add("Content-Type", "application/json");
         }
 
+        //this method returns tuples
         private static (bool valid, string error) ValidateAmount(int amount) =>
             amount >= 100 ? (true, "") : (false, "amount cannot be less than 100 XAF");
 
